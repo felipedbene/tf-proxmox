@@ -1,5 +1,6 @@
 # tf-proxmox
-Very minimal study repo to explore creating VMs using Teraform.
+
+Very minimal study repo to explore creating VMs using Terraform.
 
 Terraform module to automate the provisioning and management of Proxmox virtual machines.
 
@@ -19,7 +20,7 @@ Terraform module to automate the provisioning and management of Proxmox virtual 
 
 ## Overview
 
-`tf-proxmox` is a Terraform module designed to simplify the creation and management of virtual machines on Proxmox. It supports various customization options, including resource allocation, networking, and storage.
+`tf-proxmox` is a Terraform module designed to simplify the creation and management of virtual machines on Proxmox. This project also demonstrates a lightweight, containerized approach to managing Terraform configurations and state using Docker Compose.
 
 ---
 
@@ -29,12 +30,13 @@ Before using this module, ensure you have the following:
 
 1. **Proxmox VE**: Version 6.0 or newer.
 2. **Terraform**: Version 1.0.0 or newer.
-3. **API Token**: Ensure API access is enabled in your Proxmox VE setup.
-4. **Proxmox Provider**: Installed in your Terraform environment.
+3. **Docker Compose**: Installed for containerized Terraform execution.
+4. **API Token**: Ensure API access is enabled in your Proxmox VE setup.
+5. **Proxmox Provider**: Installed in your Terraform environment.
 
-Install the Proxmox provider:
+Install the Proxmox provider by initializing Terraform in the containerized setup:
 ```bash
-terraform init
+docker-compose run --rm terraform init
 ```
 
 ---
@@ -82,6 +84,20 @@ module "proxmox_vm" {
 
 ### Basic Usage
 
+Terraform execution is containerized using Docker Compose, with the state file persisted in a Docker volume.
+
+#### Initialize and Plan
+```bash
+docker-compose run --rm terraform init
+docker-compose run --rm terraform plan
+```
+
+#### Apply the Configuration
+```bash
+docker-compose run --rm terraform apply
+```
+
+#### Example Configuration
 ```hcl
 module "proxmox_vm" {
   source    = "github.com/felipedbene/tf-proxmox"
@@ -91,15 +107,6 @@ module "proxmox_vm" {
   disk_size = "50G"
   network   = "vmbr0"
 }
-```
-### Plan and Apply Command:
-
-```bash
-docker-compose -f docker-compose.yml run --rm terraform plan 
-```
-
-```bash
-docker-compose -f docker-compose.yml run --rm terraform plan 
 ```
 
 ### Advanced Usage with Multiple VMs
@@ -139,5 +146,6 @@ Contributions are welcome! To get started:
 
 This project is licensed under the [MIT License](LICENSE).
 
+---
 
 Based on [YouTube Video](https://www.youtube.com/watch?v=zrhLGAZXQeo)
